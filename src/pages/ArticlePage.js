@@ -1,5 +1,5 @@
 const ArticlePage = () => {
-  return <h1>This is the About Page</h1>;
+  return <h1>This is the Article Page</h1>;
 };
 
 export default ArticlePage;
