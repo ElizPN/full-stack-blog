@@ -1,11 +1,14 @@
 import { useParams } from "react-router";
 import articles from "./article-content";
 import NotFoundPage from "./NotFoundPage";
+import CommentsList from "../components/CommentsList";
+
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 const ArticlePage = () => {
   const [articleInfo, setArticleInfo] = useState({ upvotes: 0, comments: [] });
+
   // articleId - the value of articleId will be what we type in browser line
   const { articleId } = useParams();
 
@@ -21,7 +24,6 @@ const ArticlePage = () => {
   // if value of articleId equel article.name
   // articles - is array of article conetent
   const article = articles.find(article => article.name === articleId);
-  console.log(article);
 
   if (!article) {
     return <NotFoundPage />;
@@ -34,6 +36,7 @@ const ArticlePage = () => {
       {article.content.map(paragraph => (
         <p key={paragraph}>{paragraph}</p>
       ))}
+      <CommentsList comments={articleInfo.comments} />
     </>
   );
 };
