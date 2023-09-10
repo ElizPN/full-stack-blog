@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 
-const AddCommentForm = ({ articleId }) => {
+const AddCommentForm = ({ articleId, onArticleUpdated }) => {
   const [name, setName] = useState("");
   const [commentText, setCommentText] = useState("");
 
@@ -12,6 +12,9 @@ const AddCommentForm = ({ articleId }) => {
     });
 
     const updatedArticle = response.data;
+    onArticleUpdated(updatedArticle);
+    setName("");
+    setCommentText("");
   };
 
   return (
@@ -36,7 +39,7 @@ const AddCommentForm = ({ articleId }) => {
         />
       </label>
 
-      <button>Add comment</button>
+      <button onClick={addComment}>Add comment</button>
     </div>
   );
 };
