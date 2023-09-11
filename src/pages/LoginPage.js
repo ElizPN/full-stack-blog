@@ -10,9 +10,10 @@ const LoginPage = () => {
 
   const logIn = async () => {
     try {
-      await signInWithEmailAndPassword(getAuth, email, password);
+      await signInWithEmailAndPassword(getAuth(), email, password);
       navigate("/articles");
     } catch (error) {
+      console.log(error.message);
       setError(error.message);
     }
   };
