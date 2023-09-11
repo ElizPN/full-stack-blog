@@ -3,12 +3,14 @@ import articles from "./article-content";
 import NotFoundPage from "./NotFoundPage";
 import CommentsList from "../components/CommentsList";
 import AddCommentForm from "../components/AddCommentForm";
+import useUser from "../hooks/useUser";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 const ArticlePage = () => {
   const [articleInfo, setArticleInfo] = useState({ upvotes: 0, comments: [] });
+  const { user, isLoading } = useUser();
 
   // articleId - the value of articleId will be what we type in browser line
   const { articleId } = useParams();
@@ -40,16 +42,31 @@ const ArticlePage = () => {
   return (
     <>
       <h1>{article.title}</h1>
-      <p>This article has {articleInfo.upvotes} upvote(s)</p>
-      <button onClick={addUpvotes}>Add upvote</button>
+      <div className="upvotes-section">
+        {user ? (
+          <button onClick={addUpvotes}>Add upvote</button>
+        ) : (
+          <button>Log in to upvote</button>
+        )}
+
+        <p>This article has {articleInfo.upvotes} upvote(s)</p>
+      </div>
+
       {article.content.map(paragraph => (
         <p key={paragraph}>{paragraph}</p>
       ))}
+      {user ? (
+        <AddCommentForm
+          articleId={articleId}
+          onArticleUpdated={updatedArticle => {
+            setArticleInfo(updatedArticle);
+          }}
+        />
+      ) : (
+        <button>Log in to upvote</button>
+      )}
+
       <CommentsList comments={articleInfo.comments} />
-      <AddCommentForm
-        articleId={articleId}
-        onArticleUpdated={updatedArticle  => {setArticleInfo(updatedArticle);}}
-      />
     </>
   );
 };
