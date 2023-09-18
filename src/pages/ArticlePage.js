@@ -9,8 +9,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const ArticlePage = () => {
-  const [articleInfo, setArticleInfo] = useState({ upvotes: 0, comments: [] });
+  const [articleInfo, setArticleInfo] = useState({
+    upvotes: 0,
+    comments: [],
+    canUpvote: false,
+  });
   const { user, isLoading } = useUser();
+  const { canUpvote } = articleInfo;
 
   // articleId - the value of articleId will be what we type in browser line
   const { articleId } = useParams();
@@ -26,8 +31,10 @@ const ArticlePage = () => {
       const newArticleInfo = response.data;
       setArticleInfo(newArticleInfo);
     };
-    loadArticleInfo();
-  }, []);
+    if (isLoading) {
+      loadArticleInfo();
+    }
+  }, [isLoading, user]);
 
   // if value of articleId equel article.name
   // articles - is array of article conetent
@@ -56,7 +63,9 @@ const ArticlePage = () => {
       <h1>{article.title}</h1>
       <div className="upvotes-section">
         {user ? (
-          <button onClick={addUpvotes}>Add upvote</button>
+          <button onClick={addUpvotes}>
+            {canUpvote ? "Upvote" : "Alredy upvoted"}
+          </button>
         ) : (
           <button>Log in to upvote</button>
         )}
