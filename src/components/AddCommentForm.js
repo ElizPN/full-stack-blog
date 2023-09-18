@@ -5,7 +5,7 @@ import useUser from "../hooks/useUser";
 const AddCommentForm = ({ articleId, onArticleUpdated }) => {
   const [name, setName] = useState("");
   const [commentText, setCommentText] = useState("");
-  const { user } = useUser;
+  const { user } = useUser();
 
   const addComment = async () => {
     const token = user && (await user.getIdToken());
@@ -29,14 +29,7 @@ const AddCommentForm = ({ articleId, onArticleUpdated }) => {
   return (
     <div id="add-comment-form">
       <h3>Add Comment</h3>
-      <label>
-        Name:
-        <input
-          type="text"
-          value={name}
-          onChange={e => setName(e.target.value)}
-        />
-      </label>
+      {user && <p> You are posting by {user.email}</p>}
 
       <label>
         Comment:
